@@ -1,0 +1,7 @@
+git仓库：https://github.com/maochangan/projects.git
+目录说明 ： -demo
+			-lib：资料地址
+			-viewCode：前段代码
+		  -其他后段相关
+		  
+后段java：SpringBoot mybatis 数据库mysql
