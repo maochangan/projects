@@ -51,6 +51,25 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
+        <dependency>
+            <groupId>com.shhy</groupId>
+            <artifactId>demo</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.databinder/dispatch-http -->
+        <dependency>
+            <groupId>net.databinder</groupId>
+            <artifactId>dispatch-http_2.11</artifactId>
+            <version>0.8.10</version>
+        </dependency>
+
+
         <!-- 分页插件 -->
         <!--<dependency>-->
             <!--<groupId>com.github.pagehelper</groupId>-->
