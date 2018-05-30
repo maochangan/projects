@@ -1,25 +1,25 @@
-CREATE TABLE wx_user
+create table wx_user
 (
-  id int(8) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  open_id varchar(100) NOT NULL,
-  nick_name varchar(100) NOT NULL,
-  sex char(2),
-  province varchar(100),
-  city varchar(100),
-  country varchar(100),
-  head_img_url varchar(255)
+  id           int(8) auto_increment
+    primary key,
+  open_id      varchar(100) not null,
+  nick_name    varchar(100) not null,
+  sex          char(2)      null,
+  province     varchar(100) null,
+  city         varchar(100) null,
+  country      varchar(100) null,
+  head_img_url varchar(255) null
 );
-CREATE INDEX wx_user_id_index ON wx_user (id);
 
--- auto-generated definition
 create table wx_count
 (
   id       int(8) auto_increment
     primary key,
-  user_id  int(8)       not null,
-  use_type varchar(100) not null,
-  use_time varchar(225) not null,
-  use_date datetime     not null,
+  user_id  int(8)   not null,
+  event_id int(8)   not null
+  comment '事件id，0：AR识别，1：打开3D演示，2：打开使用教程 ,3：进入操作模式页面',
+  use_time int(8)   not null,
+  use_date datetime not null,
   constraint fk
   foreign key (user_id) references wx_user (id)
 );
@@ -27,6 +27,6 @@ create table wx_count
 create index wx_count_user_id_index
   on wx_count (user_id);
 
-
-
+create index wx_user_open_id_index
+  on wx_user (open_id);
 
