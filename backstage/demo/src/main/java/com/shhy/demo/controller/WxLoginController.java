@@ -106,11 +106,12 @@ public class WxLoginController {
 
     @RequestMapping(value = "analysis", method = RequestMethod.POST)
     public JsonResult analysis(Integer event_id, HttpSession session, HttpServletResponse response) {
+        logger.info("参数检查："+ event_id);
         WxUser user = (WxUser) session.getAttribute("wxUser");
-        if (null == user) {
+        if (null == user && event_id == null ) {
             logger.info("重新授权登陆");
             wxLogin(response);
-            return JsonResult.fail().add("msg", "toLogin");
+            return JsonResult.fail().add("msg", "toLogin or check event_id");
         } else {
             session.removeAttribute("cntId");
             WxCnt cnt = new WxCnt();
@@ -122,10 +123,11 @@ public class WxLoginController {
             if (state) {
                 Integer cntId = wxUserService.getCntByEntity(cnt);
                 if (0 == cntId) {
+                    logger.info("insert err");
                 }
                 session.setAttribute("cntId", cntId);
             }
-            logger.info("is or not insert");
+
             return JsonResult.success().add("msg", state);
         }
     }
