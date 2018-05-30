@@ -9,18 +9,18 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class JsonResult {
-    private int code;
+    private int status;
 
     private String message;
 
     private Map<String, Object> extend = new HashMap<String, Object>();
 
-    public int getCode() {
-        return code;
+    public int getStatus() {
+        return status;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getMessage() {
@@ -41,14 +41,14 @@ public class JsonResult {
 
     public static JsonResult success() {
         JsonResult jsonResult = new JsonResult();
-        jsonResult.setCode(100);
+        jsonResult.setStatus(1);
         jsonResult.setMessage("success");
         return jsonResult;
     }
 
     public static JsonResult fail() {
         JsonResult jsonResult = new JsonResult();
-        jsonResult.setCode(200);
+        jsonResult.setStatus(0);
         jsonResult.setMessage("fail");
         return jsonResult;
     }
