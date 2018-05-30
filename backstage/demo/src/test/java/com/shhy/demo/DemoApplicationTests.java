@@ -1,6 +1,7 @@
 package com.shhy.demo;
 
 import com.shhy.demo.bean.WxUser;
+import com.shhy.demo.dao.WxCntDao;
 import com.shhy.demo.dao.WxUserDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DemoApplicationTests {
 
     @Autowired
-    private WxUserDao wxUserDao;
+    private WxCntDao wxCntDao;
 
     @Test
     public void contextLoads() {

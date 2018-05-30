@@ -2,7 +2,7 @@ package com.shhy.demo.bean;
 
 import java.util.Date;
 
-public class WxCount {
+public class WxCnt {
 
     private Integer id ;
 
@@ -10,7 +10,7 @@ public class WxCount {
 
     private Integer eventId ;
 
-    private String useTime ;
+    private Integer useTime ;
 
     private Date useDate ;
 
@@ -38,11 +38,11 @@ public class WxCount {
         this.eventId = eventId;
     }
 
-    public String getUseTime() {
+    public Integer getUseTime() {
         return useTime;
     }
 
-    public void setUseTime(String useTime) {
+    public void setUseTime(Integer useTime) {
         this.useTime = useTime;
     }
 

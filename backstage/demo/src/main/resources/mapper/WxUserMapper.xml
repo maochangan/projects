@@ -19,7 +19,7 @@
         <result column="city" jdbcType="VARCHAR" property="city" />
         <result column="head_img_url" jdbcType="VARCHAR" property="headImgPath" />
     </resultMap>
-    <select id="update" resultMap="baseMap">
+    <update id="update" parameterType="com.shhy.demo.bean.WxUser">
         UPDATE wx_user
         <trim prefix="set" suffixOverrides=",">
             <if test="null != openId">open_id = #{openId},</if>
@@ -31,7 +31,7 @@
             <if test="null != headImgPath">head_img_url = #{headImgPath},</if>
             where id = #{id}
         </trim>
-    </select>
+    </update>
 
     <select id="checkUserRegister" parameterType="string" resultType="boolean">
         <![CDATA[select count(id) from wx_user where open_id = #{openId}]]>

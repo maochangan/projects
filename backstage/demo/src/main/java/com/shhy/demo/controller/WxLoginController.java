@@ -1,6 +1,7 @@
 package com.shhy.demo.controller;
 
 
+import com.shhy.demo.bean.WxCnt;
 import com.shhy.demo.bean.WxUser;
 import com.shhy.demo.service.WxUserService;
 import com.shhy.demo.util.JsonResult;
@@ -9,7 +10,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.List;
+import java.util.Date;
 
 @RestController
 @RequestMapping(value = "wxLoginController")
@@ -31,10 +29,11 @@ public class WxLoginController {
     @Autowired
     private WxUserService wxUserService;
 
+
     @RequestMapping(value = "wxLogin" , method = RequestMethod.GET)
     public void wxLogin(HttpServletResponse response) {
         logger.info("登录接口");
-        String backUrl = "微信开发平授权回调域名+ /api/wxLoginController/wxCallBack";
+        String backUrl = "https://wutian.zijimedia.cc/api/wxLoginController/wxCallBack";
         String url = null;
         try {
             url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + WxAuthUtil.APP_ID
@@ -105,55 +104,41 @@ public class WxLoginController {
     }
 
 
-    @RequestMapping(value = "getAllUser", method = RequestMethod.GET)
-    public JsonResult getAllUser(){
-        logger.info("测试获取全部用户信息");
-        List<WxUser> list = wxUserService.getAllUser();
-        if(null == list){
-            return JsonResult.fail().add("msg", "is null");
-        }else{
-            logger.info(":"+list.size());
-            return JsonResult.success().add("list", list);
-        }
-    }
-
-    @RequestMapping(value = "analysis" , method = RequestMethod.POST)
-    public JsonResult analysis(Integer eventId , HttpSession session){
-        logger.info("数据采集");
+    @RequestMapping(value = "analysis", method = RequestMethod.POST)
+    public JsonResult analysis(Integer event_id , HttpSession session , HttpServletResponse response){
         WxUser user = (WxUser) session.getAttribute("wxUser");
         if(null == user){
-            return JsonResult.fail().add("msg" , "session is messing");
+            logger.info("重新授权登陆");
+            wxLogin(response);
+            return JsonResult.fail().add("msg", "toLogin");
         }else{
-            String result = null ;
-            switch (eventId){
-                case 0 :
-                    //TODO ar
-                    break;
-                case 1 :
-                    //TODO 3d
-                    break;
-                case 2 :
-                    //TODO help
-                    break;
-                default:
-                    result = "err";
-                    logger.info("err");
+            session.removeAttribute("cntId");
+            WxCnt cnt = new WxCnt();
+            cnt.setUserId(user.getId());
+            cnt.setEventId(event_id);
+            cnt.setUseDate(new Date());
+            cnt.setUseTime(0);
+            boolean state = wxUserService.insertCnt(cnt);
+            if(state){
+                Integer cntId = wxUserService.getCntByEntity(cnt);
+                if(0 == cntId){}
+                session.setAttribute("cntId" , cntId);
             }
-            return JsonResult.fail().add("r" , result);
+            logger.info("is or not insert");
+            return JsonResult.success().add("msg", state);
         }
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
+    @RequestMapping(value = "analysis/online", method = RequestMethod.GET)
+    public void online(HttpSession session){
+        Integer id = (Integer) session.getAttribute("cntId");
+        if(0 == id){logger.info("nothing");}
+        WxCnt wxCnt = wxUserService.getCntById(id);
+        if(null == wxCnt){logger.info("nothing");}
+        wxCnt.setUseTime(wxCnt.getUseTime()+1);
+        boolean state = wxUserService.updateCnt(wxCnt);
+        logger.info("is update:" + state);
+    }
 
 }

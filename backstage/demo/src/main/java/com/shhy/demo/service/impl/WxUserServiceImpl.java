@@ -1,6 +1,8 @@
 package com.shhy.demo.service.impl;
 
+import com.shhy.demo.bean.WxCnt;
 import com.shhy.demo.bean.WxUser;
+import com.shhy.demo.dao.WxCntDao;
 import com.shhy.demo.dao.WxUserDao;
 import com.shhy.demo.service.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class WxUserServiceImpl implements WxUserService {
 
     @Autowired
     private WxUserDao wxUserDao ;
+
+    @Autowired
+    private WxCntDao wxCntDao ;
 
 
     @Override
@@ -61,5 +66,35 @@ public class WxUserServiceImpl implements WxUserService {
         }else{
             return true;
         }
+    }
+
+    @Override
+    public boolean insertCnt(WxCnt cnt) {
+        int state = wxCntDao.insert(cnt);
+        if(0 == state){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    @Override
+    public Integer getCntByEntity(WxCnt cnt) {
+        WxCnt cnt1 = wxCntDao.selectByEntity(cnt);
+        if(null == cnt){
+            return 0;
+        }else{
+            return cnt1.getId();
+        }
+    }
+
+    @Override
+    public WxCnt getCntById(Integer id) {
+        return wxCntDao.selectById(id);
+    }
+
+    @Override
+    public boolean updateCnt(WxCnt wxCnt) {
+        return 0 != wxCntDao.update(wxCnt);
     }
 }
