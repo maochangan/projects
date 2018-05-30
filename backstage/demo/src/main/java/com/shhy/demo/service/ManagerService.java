@@ -1,10 +1,11 @@
 package com.shhy.demo.service;
 
-import com.shhy.demo.bean.WxCnt;
-
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ManagerService {
-    List<WxCnt> analysis(Date beginTime, Date endTime, Integer eventId);
+    List<Map<String, Object>> analysis(Date beginTime, Date endTime, Integer eventId);
+
+    List<Map<String,Object>> analysisUsers(Date beginTime, Date endTime);
 }

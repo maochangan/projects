@@ -4,15 +4,15 @@ import java.util.Date;
 
 public class WxCnt {
 
-    private Integer id ;
+    private Integer id;
 
-    private Integer userId ;
+    private Integer userId;
 
-    private Integer eventId ;
+    private Integer eventId;
 
-    private Integer useTime ;
+    private Integer useTime;
 
-    private Date useDate ;
+    private Date useDate;
 
     public Integer getId() {
         return id;

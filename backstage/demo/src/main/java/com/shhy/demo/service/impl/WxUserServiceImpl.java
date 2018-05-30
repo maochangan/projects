@@ -17,18 +17,18 @@ import java.util.List;
 public class WxUserServiceImpl implements WxUserService {
 
     @Autowired
-    private WxUserDao wxUserDao ;
+    private WxUserDao wxUserDao;
 
     @Autowired
-    private WxCntDao wxCntDao ;
+    private WxCntDao wxCntDao;
 
 
     @Override
     public List<WxUser> getAllUser() {
         List<WxUser> list = wxUserDao.getAllWxUser();
-        if(0 == list.size()){
+        if (0 == list.size()) {
             return null;
-        }else{
+        } else {
             return list;
         }
     }
@@ -41,9 +41,9 @@ public class WxUserServiceImpl implements WxUserService {
     @Override
     public boolean insert(WxUser user) {
         int state = wxUserDao.insert(user);
-        if(0 == state){
+        if (0 == state) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -51,19 +51,19 @@ public class WxUserServiceImpl implements WxUserService {
     @Override
     public WxUser returnWxUserByOpenId(String openid) {
         WxUser wxUser = wxUserDao.returnWxUserByOpenId(openid);
-        if(null == wxUser){
+        if (null == wxUser) {
             return null;
-        }else{
+        } else {
             return wxUser;
         }
     }
 
     @Override
     public boolean update(WxUser user) {
-        int  state = wxUserDao.update(user);
-        if(state == 0){
+        int state = wxUserDao.update(user);
+        if (state == 0) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -71,9 +71,9 @@ public class WxUserServiceImpl implements WxUserService {
     @Override
     public boolean insertCnt(WxCnt cnt) {
         int state = wxCntDao.insert(cnt);
-        if(0 == state){
+        if (0 == state) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -81,9 +81,9 @@ public class WxUserServiceImpl implements WxUserService {
     @Override
     public Integer getCntByEntity(WxCnt cnt) {
         WxCnt cnt1 = wxCntDao.selectByEntity(cnt);
-        if(null == cnt){
+        if (null == cnt) {
             return 0;
-        }else{
+        } else {
             return cnt1.getId();
         }
     }

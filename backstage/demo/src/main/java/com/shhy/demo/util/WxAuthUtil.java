@@ -25,7 +25,7 @@ public class WxAuthUtil {
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response = httpClient.execute(httpGet);
         HttpEntity entity = response.getEntity();
-        if(null != entity){
+        if (null != entity) {
             String result = EntityUtils.toString(entity, "UTF-8");
             jsonObject = new JSONObject(result);
         }

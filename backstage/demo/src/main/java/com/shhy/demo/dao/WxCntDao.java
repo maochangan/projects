@@ -20,5 +20,7 @@ public interface WxCntDao {
     @Update("UPDATE wx_count SET use_time=#{useTime , jdbcType=INTEGER} WHERE id=#{id , jdbcType=INTEGER}")
     int update(WxCnt wxCnt);
 
-    List<Map<String,Object>> selectCountWithCondition(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("eventId") Integer eventId);
+    List<Map<String , Object>> selectCountWithCondition(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("eventId") Integer eventId);
+
+    List<Map<String,Object>> analysisUsers(@Param("beginTime")Date beginTime,@Param("endTime") Date endTime);
 }

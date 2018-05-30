@@ -11,9 +11,7 @@ import java.util.Map;
 public class JsonResult {
     private int status;
 
-    private String message;
-
-    private Map<String, Object> extend = new HashMap<String, Object>();
+    private Map<String, Object> data = new HashMap<String, Object>();
 
     public int getStatus() {
         return status;
@@ -23,38 +21,28 @@ public class JsonResult {
         this.status = status;
     }
 
-    public String getMessage() {
-        return message;
+    public Map<String, Object> getData() {
+        return data;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Map<String, Object> getExtend() {
-        return extend;
-    }
-
-    public void setExtend(Map<String, Object> extend) {
-        this.extend = extend;
+    public void setData(Map<String, Object> data) {
+        this.data = data;
     }
 
     public static JsonResult success() {
         JsonResult jsonResult = new JsonResult();
         jsonResult.setStatus(1);
-        jsonResult.setMessage("success");
         return jsonResult;
     }
 
     public static JsonResult fail() {
         JsonResult jsonResult = new JsonResult();
         jsonResult.setStatus(0);
-        jsonResult.setMessage("fail");
         return jsonResult;
     }
 
     public JsonResult add(String key, Object value) {
-        this.extend.put(key, value);
+        this.data.put(key, value);
         return this;
     }
 

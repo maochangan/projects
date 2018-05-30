@@ -2,21 +2,21 @@ package com.shhy.demo.bean;
 
 public class WxUser {
 
-    private Integer id ;
+    private Integer id;
 
     private String openId;
 
     private String nickName;
 
-    private char sex ;
+    private char sex;
 
-    private String province ;
+    private String province;
 
-    private String city ;
+    private String city;
 
-    private String country ;
+    private String country;
 
-    private String headImgPath ;
+    private String headImgPath;
 
     public Integer getId() {
         return id;
