@@ -67,6 +67,7 @@ public class WxLoginController {
                     + "&grant_type=authorization_code";
             logger.info("地址：" + url);
             JSONObject jsonObject = WxAuthUtil.doGet(url);
+            logger.info("json" + jsonObject.toString());
             String openid = jsonObject.getString("openid");
             String access_token = jsonObject.getString("access_token");
             String refresh_token = jsonObject.getString("refresh_token");
