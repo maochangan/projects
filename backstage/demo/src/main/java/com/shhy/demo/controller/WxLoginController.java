@@ -1,18 +1,19 @@
 package com.shhy.demo.controller;
 
 
+import com.shhy.demo.bean.GroupUser;
 import com.shhy.demo.bean.WxCnt;
 import com.shhy.demo.bean.WxUser;
 import com.shhy.demo.service.WxUserService;
 import com.shhy.demo.util.JsonResult;
+import com.shhy.demo.util.MapResult;
 import com.shhy.demo.util.WxAuthUtil;
+import org.apache.ibatis.annotations.Param;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +21,9 @@ import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.util.Date;
 
+@CrossOrigin(origins = "*" , maxAge = 3600)
 @RestController
-@RequestMapping(value = "wxLoginController")
+@RequestMapping(value = "analysis")
 public class WxLoginController {
 
     Logger logger = LoggerFactory.getLogger(WxLoginController.class);
@@ -30,6 +32,9 @@ public class WxLoginController {
     private WxUserService wxUserService;
 
 
+    /**
+     * 方案1  需要微信开放平台相关密钥
+     */
     @RequestMapping(value = "wxLogin", method = RequestMethod.GET)
     public void wxLogin(HttpServletResponse response) {
         logger.info("登录接口");
@@ -49,6 +54,9 @@ public class WxLoginController {
 
     }
 
+    /**
+     * 方案1 回调接口
+     */
     @RequestMapping(value = "wxCallBack", method = RequestMethod.GET)
     public JsonResult wxCallBack(HttpServletRequest request, HttpSession session) {
         try {
@@ -103,8 +111,7 @@ public class WxLoginController {
         }
     }
 
-
-    @RequestMapping(value = "analysis", method = RequestMethod.POST)
+    @RequestMapping(value = "analysisFinal", method = RequestMethod.POST)
     public JsonResult analysis(Integer event_id, HttpSession session, HttpServletResponse response) {
         logger.info("参数检查："+ event_id);
         WxUser user = (WxUser) session.getAttribute("wxUser");
@@ -127,16 +134,76 @@ public class WxLoginController {
                 }
                 session.setAttribute("cntId", cntId);
             }
-
             return JsonResult.success().add("msg", state);
         }
     }
 
+    /**
+     * 方案2 对方提供相关信息
+     */
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public MapResult toLogin(@Param("ds") GroupUser ds , HttpSession session){
+        logger.info("确认参数"+ ds.getOpenid() + ds.getCompany_no() + ds.getStart_time() );
+        if(null == ds.getOpenid()){
+            return MapResult.fail();
+        }
+        if( null == session.getAttribute("wxUser")){
+            boolean flag = wxUserService.checkUserRegister(ds.getOpenid());
+            if(!flag){
+                WxUser user = new WxUser();
+                user.setOpenId(ds.getOpenid());
+                user.setCompanyNo(ds.getCompany_no());
+                boolean state = wxUserService.insert(user);
+                logger.info("insert status" + state);
+                WxUser wxUser = wxUserService.returnWxUserByOpenId(ds.getOpenid());
+                session.setAttribute("wxUser", wxUser);
+                WxCnt cnt = new WxCnt();
+                cnt.setUserId(wxUser.getId());
+                cnt.setEventId(ds.getEvent_id());
+                cnt.setUseTime(0);
+                cnt.setUseDate(new Date());
+                boolean cntInsert = wxUserService.insertCnt(cnt);
+                if(cntInsert){
+                    Integer cntId = wxUserService.getCntByEntity(cnt);
+                    session.setAttribute("cntId" , cntId);
+                }
+            }else{
+                WxUser wxUser = wxUserService.returnWxUserByOpenId(ds.getOpenid());
+                session.setAttribute("wxUser", wxUser);
+                WxCnt cnt = new WxCnt();
+                cnt.setUserId(wxUser.getId());
+                cnt.setEventId(ds.getEvent_id());
+                cnt.setUseTime(0);
+                cnt.setUseDate(new Date());
+                boolean cntInsert = wxUserService.insertCnt(cnt);
+                if(cntInsert){
+                    Integer cntId = wxUserService.getCntByEntity(cnt);
+                    session.setAttribute("cntId" , cntId);
+                }
+            }
+            return MapResult.success();
+        }else{
+            logger.info("已经登陆过 ， 切换event_id");
+            session.removeAttribute("cntId");
+            WxUser wxUser = (WxUser) session.getAttribute("wxUser");
+            WxCnt cnt = new WxCnt();
+            cnt.setUserId(wxUser.getId());
+            cnt.setEventId(ds.getEvent_id());
+            cnt.setUseTime(0);
+            cnt.setUseDate(new Date());
+            boolean cntInsert = wxUserService.insertCnt(cnt);
+            if(cntInsert){
+                Integer cntId = wxUserService.getCntByEntity(cnt);
+                session.setAttribute("cntId" , cntId);
+            }
+            return MapResult.success();
+        }
+    }
 
-    @RequestMapping(value = "analysis/online", method = RequestMethod.GET)
+    @RequestMapping(value = "online", method = RequestMethod.GET)
     public void online(HttpSession session) {
         Integer id = (Integer) session.getAttribute("cntId");
-        if (0 == id) {
+        if (null == id) {
             logger.info("nothing");
         }
         WxCnt wxCnt = wxUserService.getCntById(id);

@@ -3,11 +3,12 @@ create table wx_user
   id           int(8) auto_increment
     primary key,
   open_id      varchar(100) not null,
-  nick_name    varchar(100) not null,
+  company_no   varchar(100) not null,
+  nick_name    varchar(100) null,
   sex          char(2)      null,
+  country      varchar(100) null,
   province     varchar(100) null,
   city         varchar(100) null,
-  country      varchar(100) null,
   head_img_url varchar(255) null
 );
 

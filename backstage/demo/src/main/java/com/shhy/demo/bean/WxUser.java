@@ -18,6 +18,16 @@ public class WxUser {
 
     private String headImgPath;
 
+    private String companyNo;
+
+    public String getCompanyNo() {
+        return companyNo;
+    }
+
+    public void setCompanyNo(String companyNo) {
+        this.companyNo = companyNo;
+    }
+
     public Integer getId() {
         return id;
     }

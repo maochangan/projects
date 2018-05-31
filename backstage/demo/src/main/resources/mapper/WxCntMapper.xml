@@ -30,7 +30,7 @@
         <if test="beginTime != null or endTime != null ">
             wx_count.use_date between #{beginTime , jdbcType=DATE} and #{endTime , jdbcType=DATE}
         </if>
-        AND wx_count.event_id=1
+        AND wx_count.event_id=0
         GROUP BY user_id
     </select>
 

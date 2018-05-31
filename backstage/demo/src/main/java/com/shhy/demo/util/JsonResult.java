@@ -9,6 +9,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class JsonResult {
+
     private int status;
 
     private Map<String, Object> data = new HashMap<String, Object>();
@@ -50,7 +51,7 @@ public class JsonResult {
     public Map<String, Object> exceptionResult(Exception exception) {
         exception.printStackTrace();
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("code", 500);
+        result.put("status", 0);
         result.put("message", "系统异常，请稍后再试！");
         return result;
     }
