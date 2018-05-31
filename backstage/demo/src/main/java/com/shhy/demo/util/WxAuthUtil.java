@@ -13,11 +13,11 @@ import java.io.IOException;
 public class WxAuthUtil {
 
     //公众号获取
-    public static final String APP_ID = "wx3f3cbfafbc777f88";
+    public static final String APP_ID = "wxb622a8ee83cd186e";
 
-    public static final String APPSECRET = "da24488983ff040fafa5fc643a3f80b0";
+    public static final String APPSECRET = "280ca023bf9ba48fc85695ca5e8f88aa";
 
-    public static final String TOKEN = "qdfenghui.com";
+    public static final String TOKEN = "UEHFANV3OJFU6FW";
 
     public static JSONObject doGet(String url) throws IOException {
         JSONObject jsonObject = null;

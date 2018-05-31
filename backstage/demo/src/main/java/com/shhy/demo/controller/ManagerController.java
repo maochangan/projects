@@ -46,7 +46,6 @@ public class ManagerController {
         }
     }
 
-
     @RequestMapping(value = "analysis", method = RequestMethod.GET)
     public JsonResult analysis(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("eventId") Integer eventId, HttpSession session) {
         logger.info("事件数据查询API");

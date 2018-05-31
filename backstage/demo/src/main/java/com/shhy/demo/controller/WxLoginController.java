@@ -19,12 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @CrossOrigin(origins = "*" , maxAge = 3600)
 @RestController
-@RequestMapping(value = "analysis")
+@RequestMapping(value = "")
 public class WxLoginController {
 
     Logger logger = LoggerFactory.getLogger(WxLoginController.class);
@@ -58,11 +57,10 @@ public class WxLoginController {
     /**
      * 方案1 回调接口
      */
-    @RequestMapping(value = "wxCallBack", method = RequestMethod.GET)
-    public JsonResult wxCallBack(HttpServletRequest request, HttpSession session) {
+    @RequestMapping(value = "wxid", method = RequestMethod.GET)
+    public JsonResult wxCallBack(HttpServletRequest request, HttpSession session , String code) {
         try {
             logger.info("微信回调函数");
-            String code = request.getParameter("code");
             String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + WxAuthUtil.APP_ID
                     + "&secret=" + WxAuthUtil.APPSECRET
                     + "&code=" + code
@@ -105,14 +103,14 @@ public class WxLoginController {
                 logger.info("is  or not update " + state);
                 session.setAttribute("wxUser", user);
             }
-            return JsonResult.success().add("msg", "授权登陆成功");
+            return JsonResult.success().add("openid", user.getOpenId());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail().add("msg", "err");
         }
     }
 
-    @RequestMapping(value = "analysisCase2", method = RequestMethod.POST)
+    @RequestMapping(value = "analysis", method = RequestMethod.POST)
     public JsonResult analysis(Integer event_id, HttpSession session, HttpServletResponse response) {
         logger.info("方案2数据采集");
         logger.info("参数检查："+ event_id);
@@ -145,7 +143,7 @@ public class WxLoginController {
     /**
      * 方案2 对方提供相关信息
      */
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "case2", method = RequestMethod.POST)
     public MapResult toLogin(@Param("ds") GroupUser ds , HttpSession session){
         logger.info("确认参数"+ ds.getOpenid() + ds.getCompany_no() + ds.getStart_time());
         session.removeAttribute("cntId");
@@ -211,7 +209,7 @@ public class WxLoginController {
         }
     }
 
-    @RequestMapping(value = "online", method = RequestMethod.GET)
+    @RequestMapping(value = "analysis/online", method = RequestMethod.GET)
     public void online(HttpSession session) {
         Integer id = (Integer) session.getAttribute("cntId");
         if (null == id) {
