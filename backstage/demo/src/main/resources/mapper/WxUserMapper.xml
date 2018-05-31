@@ -23,13 +23,14 @@
     <update id="update" parameterType="com.shhy.demo.bean.WxUser">
         UPDATE wx_user
         <trim prefix="set" suffixOverrides=",">
-            <if test="null != openId">open_id = #{openId},</if>
-            <if test="null != nickName">nick_name = #{nickName},</if>
-            <if test="null != sex">sex = #{sex},</if>
-            <if test="null != province">province = #{province},</if>
-            <if test="null != city">city = #{city},</if>
-            <if test="null != country">country = #{country},</if>
-            <if test="null != headImgPath">head_img_url = #{headImgPath},</if>
+            <if test="null != openId">open_id = #{openId}</if>
+            <if test="null != nickName">,nick_name = #{nickName}</if>
+            <if test="null != sex">,sex = #{sex}</if>
+            <if test="null != province">,province = #{province}</if>
+            <if test="null != city">,city = #{city}</if>
+            <if test="null != country">,country = #{country}</if>
+            <if test="null != headImgPath">,head_img_url = #{headImgPath}</if>
+            <if test="null != companyNo">,company_no = #{companyNo}</if>
             where id = #{id}
         </trim>
     </update>

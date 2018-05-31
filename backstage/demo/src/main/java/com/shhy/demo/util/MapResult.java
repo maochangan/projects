@@ -5,7 +5,17 @@ public class MapResult {
 
     private Object data ;
 
+    private String open_id;
+
     private Integer status ;
+
+    public String getOpen_id() {
+        return open_id;
+    }
+
+    public void setOpen_id(String open_id) {
+        this.open_id = open_id;
+    }
 
     public Integer getStatus() {
         return status;
@@ -37,6 +47,11 @@ public class MapResult {
 
     public MapResult add(Object value) {
         this.setData(value);
+        return this;
+    }
+
+    public MapResult addOpenid(String value){
+        this.setOpen_id(value);
         return this;
     }
 

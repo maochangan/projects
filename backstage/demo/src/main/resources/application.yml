@@ -11,9 +11,9 @@ server:
       timeout: 10m
 spring:
   datasource:
-    username: root
-    password: 88888888
-    url: jdbc:mysql://localhost:3306/db_wt?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: wtdbuser
+    password: wtdbuser
+    url: jdbc:mysql://bj-cdb-hgkqwllz.sql.tencentcdb.com:63308/wt-db?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.jdbc.Driver
 #  resources:
 #    static-locations: file:${web.upload-path},file:${web.fornt-path}
