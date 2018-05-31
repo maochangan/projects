@@ -5,7 +5,7 @@
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="open_id" jdbcType="VARCHAR" property="openId" />
         <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
-        <result column="sex" jdbcType="CHAR" property="sex" />
+        <result column="sex" jdbcType="VARCHAR" property="sex" />
         <result column="province" jdbcType="VARCHAR" property="province" />
         <result column="city" jdbcType="VARCHAR" property="city" />
         <result column="country" jdbcType="VARCHAR" property="country" />
@@ -16,7 +16,7 @@
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="open_id" jdbcType="VARCHAR" property="openId" />
         <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
-        <result column="sex" jdbcType="CHAR" property="sex" />
+        <result column="sex" jdbcType="VARCHAR" property="sex" />
         <result column="city" jdbcType="VARCHAR" property="city" />
         <result column="head_img_url" jdbcType="VARCHAR" property="headImgPath" />
     </resultMap>
@@ -48,5 +48,69 @@
     <select id="getAllWxUser" resultMap="Map">
         select id , open_id , nick_name , sex , city , head_img_url from wx_user
     </select>
+
+
+    <insert id="insert" parameterType="com.shhy.demo.bean.WxUser">
+        insert into wx_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="companyNo != null">
+                company_no,
+            </if>
+            <if test="nickName != null">
+                nick_name,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="headImgPath != null">
+                head_img_url,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="companyNo != null">
+                #{companyNo,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="headImgPath != null">
+                #{headImgPath,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
 
 </mapper>

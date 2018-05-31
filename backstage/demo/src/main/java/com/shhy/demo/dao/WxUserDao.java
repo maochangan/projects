@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface WxUserDao {
 
-    @Insert("INSERT INTO wx_user (open_id , nick_name , sex , province , city , country , head_img_url) VALUES (#{openId,jdbcType=VARCHAR} , #{nickName , jdbcType=VARCHAR} , #{sex , jdbcType=CHAR} , #{province, jdbcType=VARCHAR} , #{city , jdbcType=VARCHAR} , #{country , jdbcType=VARCHAR} , #{headImgPath , jdbcType=VARCHAR})")
     int insert(WxUser user);
 
     int update(WxUser user);

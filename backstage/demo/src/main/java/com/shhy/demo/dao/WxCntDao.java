@@ -9,13 +9,16 @@ import java.util.Map;
 
 public interface WxCntDao {
 
-    @Insert("INSERT INTO wx_count (user_id , event_id , use_time , use_date) VALUES (#{userId , jdbcType=INTEGER} , #{eventId , jdbcType=INTEGER} , #{useTime , jdbcType=INTEGER} , #{useDate , jdbcType=DATE})")
+    @Insert("INSERT INTO wx_count (user_id , event_id , use_time , use_date , only_id) VALUES (#{userId , jdbcType=INTEGER} , #{eventId , jdbcType=INTEGER} , #{useTime , jdbcType=INTEGER} , #{useDate , jdbcType=DATE} , #{ownerId , jdbcType=VARCHAR})")
     int insert(WxCnt wxCnt);
 
     @Select("SELECT id FROM wx_count WHERE user_id=#{userId , jdbcType=INTEGER} AND event_id=#{eventId , jdbcType=INTEGER} AND use_time=#{useTime , jdbcType=INTEGER} AND use_date=#{useDate , jdbcType=DATE}")
     WxCnt selectByEntity(WxCnt cnt);
 
     WxCnt selectById(Integer id);
+
+    @Select("select * from wx_count where only_id = #{ownerId , jdbcType=VARCHAR}")
+    WxCnt selectByOnlyId(String ownerId);
 
     @Update("UPDATE wx_count SET use_time=#{useTime , jdbcType=INTEGER} WHERE id=#{id , jdbcType=INTEGER}")
     int update(WxCnt wxCnt);

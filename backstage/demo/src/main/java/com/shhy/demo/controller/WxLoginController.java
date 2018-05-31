@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @CrossOrigin(origins = "*" , maxAge = 3600)
@@ -87,7 +88,7 @@ public class WxLoginController {
             WxUser user = new WxUser();
             user.setOpenId(userInfo.getString("openid"));
             user.setNickName(userInfo.getString("nickname"));
-            user.setSex(userInfo.getString("sex").charAt(0));
+            user.setSex(userInfo.getString("sex"));
             user.setProvince(userInfo.getString("province"));
             user.setCity(userInfo.getString("city"));
             user.setCountry(userInfo.getString("country"));
@@ -111,8 +112,9 @@ public class WxLoginController {
         }
     }
 
-    @RequestMapping(value = "analysisFinal", method = RequestMethod.POST)
+    @RequestMapping(value = "analysisCase2", method = RequestMethod.POST)
     public JsonResult analysis(Integer event_id, HttpSession session, HttpServletResponse response) {
+        logger.info("方案2数据采集");
         logger.info("参数检查："+ event_id);
         WxUser user = (WxUser) session.getAttribute("wxUser");
         if (null == user && event_id == null ) {
@@ -126,9 +128,11 @@ public class WxLoginController {
             cnt.setEventId(event_id);
             cnt.setUseDate(new Date());
             cnt.setUseTime(0);
+            String onlyId = user.getOpenId()+"."+cnt.getUserId()+"."+ Math.random();
+            cnt.setOwnerId(onlyId);
             boolean state = wxUserService.insertCnt(cnt);
             if (state) {
-                Integer cntId = wxUserService.getCntByEntity(cnt);
+                Integer cntId = wxUserService.getCntByOwnerId(cnt);
                 if (0 == cntId) {
                     logger.info("insert err");
                 }
@@ -143,7 +147,8 @@ public class WxLoginController {
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
     public MapResult toLogin(@Param("ds") GroupUser ds , HttpSession session){
-        logger.info("确认参数"+ ds.getOpenid() + ds.getCompany_no() + ds.getStart_time() );
+        logger.info("确认参数"+ ds.getOpenid() + ds.getCompany_no() + ds.getStart_time());
+        session.removeAttribute("cntId");
         if(null == ds.getOpenid()){
             return MapResult.fail();
         }
@@ -162,9 +167,11 @@ public class WxLoginController {
                 cnt.setEventId(ds.getEvent_id());
                 cnt.setUseTime(0);
                 cnt.setUseDate(new Date());
+                String onlyId = wxUser.getOpenId()+"."+cnt.getUserId()+"."+ Math.random();
+                cnt.setOwnerId(onlyId);
                 boolean cntInsert = wxUserService.insertCnt(cnt);
                 if(cntInsert){
-                    Integer cntId = wxUserService.getCntByEntity(cnt);
+                    Integer cntId = wxUserService.getCntByOwnerId(cnt);
                     session.setAttribute("cntId" , cntId);
                 }
             }else{
@@ -175,9 +182,11 @@ public class WxLoginController {
                 cnt.setEventId(ds.getEvent_id());
                 cnt.setUseTime(0);
                 cnt.setUseDate(new Date());
+                String onlyId = wxUser.getOpenId()+"."+cnt.getUserId()+"."+ Math.random();
+                cnt.setOwnerId(onlyId);
                 boolean cntInsert = wxUserService.insertCnt(cnt);
                 if(cntInsert){
-                    Integer cntId = wxUserService.getCntByEntity(cnt);
+                    Integer cntId = wxUserService.getCntByOwnerId(cnt);
                     session.setAttribute("cntId" , cntId);
                 }
             }
@@ -191,9 +200,11 @@ public class WxLoginController {
             cnt.setEventId(ds.getEvent_id());
             cnt.setUseTime(0);
             cnt.setUseDate(new Date());
+            String onlyId = wxUser.getOpenId()+"."+cnt.getUserId()+"."+ Math.random();
+            cnt.setOwnerId(onlyId);
             boolean cntInsert = wxUserService.insertCnt(cnt);
             if(cntInsert){
-                Integer cntId = wxUserService.getCntByEntity(cnt);
+                Integer cntId = wxUserService.getCntByOwnerId(cnt);
                 session.setAttribute("cntId" , cntId);
             }
             return MapResult.success();
@@ -213,6 +224,15 @@ public class WxLoginController {
         wxCnt.setUseTime(wxCnt.getUseTime() + 1);
         boolean state = wxUserService.updateCnt(wxCnt);
         logger.info("is update:" + state);
+    }
+
+
+    @RequestMapping(value = "cs", method = RequestMethod.GET)
+    public MapResult cs(HttpSession session){
+        WxUser wxUser = (WxUser) session.getAttribute("wxUser");
+        logger.info(":"+ session.getAttribute("cntId"));
+        return MapResult.success().add(wxUser);
+
     }
 
 }

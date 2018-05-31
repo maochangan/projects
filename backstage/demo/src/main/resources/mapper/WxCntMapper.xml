@@ -7,6 +7,7 @@
         <result column="event_id" jdbcType="INTEGER" property="eventId" />
         <result column="use_time" jdbcType="INTEGER" property="useTime" />
         <result column="use_date" jdbcType="DATE" property="useDate" />
+        <result column="only_id" jdbcType="VARCHAR" property="ownerId"/>
     </resultMap>
 
     <select id="selectById" resultMap="baseMap">

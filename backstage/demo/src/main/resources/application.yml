@@ -8,13 +8,12 @@ server:
   servlet:
 #    context-path: /api
     session:
-      timeout: 15m
+      timeout: 10m
 spring:
   datasource:
     username: root
     password: 88888888
-    url: jdbc:mysql://localhost:3306/db_wt?useUnicode=true&characterEncoding=utf-8&useSSL=false
-#    &allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/db_wt?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.jdbc.Driver
 #  resources:
 #    static-locations: file:${web.upload-path},file:${web.fornt-path}

@@ -5,7 +5,7 @@ create table wx_user
   open_id      varchar(100) not null,
   company_no   varchar(100) not null,
   nick_name    varchar(100) null,
-  sex          char(2)      null,
+  sex          varchar(10)  null,
   country      varchar(100) null,
   province     varchar(100) null,
   city         varchar(100) null,
@@ -16,11 +16,12 @@ create table wx_count
 (
   id       int(8) auto_increment
     primary key,
-  user_id  int(8)   not null,
-  event_id int(8)   not null
+  user_id  int(8)       not null,
+  event_id int(8)       not null
   comment '事件id，0：AR识别，1：打开3D演示，2：打开使用教程 ,3：进入操作模式页面',
-  use_time int(8)   not null,
-  use_date datetime not null,
+  use_time int(8)       not null,
+  use_date datetime     not null,
+  only_id  varchar(100) not null,
   constraint fk
   foreign key (user_id) references wx_user (id)
 );

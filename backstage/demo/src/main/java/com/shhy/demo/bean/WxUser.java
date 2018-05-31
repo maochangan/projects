@@ -8,7 +8,7 @@ public class WxUser {
 
     private String nickName;
 
-    private char sex;
+    private String sex;
 
     private String province;
 
@@ -52,11 +52,11 @@ public class WxUser {
         this.nickName = nickName;
     }
 
-    public char getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(char sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

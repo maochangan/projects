@@ -97,4 +97,14 @@ public class WxUserServiceImpl implements WxUserService {
     public boolean updateCnt(WxCnt wxCnt) {
         return 0 != wxCntDao.update(wxCnt);
     }
+
+    @Override
+    public Integer getCntByOwnerId(WxCnt cnt) {
+        WxCnt cnt1 = wxCntDao.selectByOnlyId(cnt.getOwnerId());
+        if (null == cnt) {
+            return 0;
+        } else {
+            return cnt1.getId();
+        }
+    }
 }

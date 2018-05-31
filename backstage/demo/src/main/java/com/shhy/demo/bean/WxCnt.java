@@ -1,5 +1,6 @@
 package com.shhy.demo.bean;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class WxCnt {
@@ -13,6 +14,16 @@ public class WxCnt {
     private Integer useTime;
 
     private Date useDate;
+
+    private String ownerId;
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 
     public Integer getId() {
         return id;
@@ -46,8 +57,8 @@ public class WxCnt {
         this.useTime = useTime;
     }
 
-    public Date getUseDate() {
-        return useDate;
+    public Timestamp getUseDate() {
+        return new Timestamp(useDate.getTime());
     }
 
     public void setUseDate(Date useDate) {

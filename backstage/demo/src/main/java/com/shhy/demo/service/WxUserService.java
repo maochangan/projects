@@ -24,4 +24,6 @@ public interface WxUserService {
     WxCnt getCntById(Integer id);
 
     boolean updateCnt(WxCnt wxCnt);
+
+    Integer getCntByOwnerId(WxCnt cnt);
 }

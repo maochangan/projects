@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DemoApplicationTests {
 
     @Autowired
-    private WxCntDao wxCntDao;
 
     @Test
     public void contextLoads() {
@@ -24,7 +23,6 @@ public class DemoApplicationTests {
         for (int i = 0 ; i < 50 ; i ++){
             user.setOpenId("openid"+ (i+Math.random()*i));
             user.setNickName("nickName" + (i+Math.random()*i));
-            user.setSex('m');
             user.setProvince("province"+ (i+Math.random()*i));
             user.setCity("city"+(i+Math.random()*i));
             user.setCountry("country" + (i+Math.random()*i));

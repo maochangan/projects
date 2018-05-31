@@ -5,19 +5,29 @@ import com.shhy.demo.service.ManagerService;
 import com.shhy.demo.util.AdminUtil;
 import com.shhy.demo.util.AppMd5Util;
 import com.shhy.demo.util.JsonResult;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+@CrossOrigin(origins = "*" , maxAge = 3600)
 @RestController
-@RequestMapping(value = "managerController")
+@RequestMapping(value = "manager")
 public class ManagerController {
+
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
 
     Logger logger = LoggerFactory.getLogger(ManagerController.class);
 
@@ -26,9 +36,10 @@ public class ManagerController {
 
 
     @RequestMapping(value = "adminLogin", method = RequestMethod.POST)
-    public JsonResult adminLogin(String userName, String password, HttpSession session) {
-        if (userName.equals(AdminUtil.USER_NAME) && AppMd5Util.md5Password(password).equals(AdminUtil.PASSWORD)) {
-            session.setAttribute("userName", userName);
+    public JsonResult adminLogin(@Param("username") String username, @Param("password") String password, HttpSession session) {
+        logger.info("check null" + username + password);
+        if (username.equals(AdminUtil.USER_NAME) && AppMd5Util.md5Password(password).equals(AdminUtil.PASSWORD)) {
+            session.setAttribute("userName", username);
             return JsonResult.success().add("msg", "登陆成功！");
         } else {
             return JsonResult.fail().add("msg", "用户名密码错误");
@@ -37,11 +48,11 @@ public class ManagerController {
 
 
     @RequestMapping(value = "analysis", method = RequestMethod.GET)
-    public JsonResult analysis(Date beginTime, Date endTime, Integer eventId, HttpSession session) {
+    public JsonResult analysis(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("eventId") Integer eventId, HttpSession session) {
         logger.info("事件数据查询API");
-        if (null == session.getAttribute("userName")) {
-            return JsonResult.fail().add("msg", "请登陆！");
-        }
+//        if (null == session.getAttribute("userName")) {
+//            return JsonResult.fail().add("msg", "请登陆！");
+//        }
         logger.info("查询使用信息:" + beginTime + endTime + eventId);
         List<Map<String, Object>> data = managerService.analysis(beginTime, endTime, eventId);
         if (null == data) {
@@ -52,11 +63,11 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "analysis/users", method = RequestMethod.GET)
-    public JsonResult analysisUsers(Date beginTime, Date endTime, HttpSession session) {
+    public JsonResult analysisUsers(@Param("beginTime")Date beginTime, @Param("endTime")Date endTime, HttpSession session) {
         logger.info("用户数据查询API");
-        if (null == session.getAttribute("userName")) {
-            return JsonResult.fail().add("msg", "请登陆！");
-        }
+//        if (null == session.getAttribute("userName")) {
+//            return JsonResult.fail().add("msg", "请登陆！");
+//        }
         logger.info("查询使用信息:" + beginTime + endTime);
         List<Map<String, Object>> data = managerService.analysisUsers(beginTime, endTime);
         if (null == data) {
