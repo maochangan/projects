@@ -4,7 +4,7 @@
 #  fornt-path: D:/fornt/
 
 server:
-  port: 8011
+  port: 80
   servlet:
 #    context-path: /api
     session:
