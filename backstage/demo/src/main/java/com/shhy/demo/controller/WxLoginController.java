@@ -38,7 +38,7 @@ public class WxLoginController {
     @RequestMapping(value = "wxLogin", method = RequestMethod.GET)
     public void wxLogin(HttpServletResponse response) {
         logger.info("登录接口");
-        String backUrl = "https://wutian.zijimedia.cc/api/wxLoginController/wxCallBack";
+        String backUrl = "https://wutian.zijimedia.cc/wxid";
         String url = null;
         try {
             url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + WxAuthUtil.APP_ID
