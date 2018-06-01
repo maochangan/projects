@@ -111,35 +111,6 @@ public class WxLoginController {
         }
     }
 
-    @RequestMapping(value = "analysisCase1", method = RequestMethod.POST)
-    public JsonResult analysis(Integer event_id, HttpSession session, HttpServletResponse response) {
-        logger.info("参数检查：" + event_id);
-        WxUser user = (WxUser) session.getAttribute("wxUser");
-        if (null == user && event_id == null) {
-            logger.info("重新授权登陆");
-            wxLogin(response);
-            return JsonResult.fail().add("msg", "toLogin or check event_id");
-        } else {
-            session.removeAttribute("cntId");
-            WxCnt cnt = new WxCnt();
-            cnt.setUserId(user.getId());
-            cnt.setEventId(event_id);
-            cnt.setUseDate(new Date());
-            cnt.setUseTime(0);
-            String onlyId = user.getOpenId() + "." + cnt.getUserId() + "." + Math.random();
-            cnt.setOwnerId(onlyId);
-            boolean state = wxUserService.insertCnt(cnt);
-            if (state) {
-                Integer cntId = wxUserService.getCntByOwnerId(cnt);
-                if (0 == cntId) {
-                    logger.info("insert err");
-                }
-                session.setAttribute("cntId", cntId);
-            }
-            return JsonResult.success().add("msg", state);
-        }
-    }
-
     @RequestMapping(value = "analysis", method = RequestMethod.POST)
     public MapResult toLogin(@Param("ds") GroupUser ds, HttpSession session) {
         logger.info("确认参数" + ds.getOpenid() + ds.getCompany_no() + ds.getStart_time());
