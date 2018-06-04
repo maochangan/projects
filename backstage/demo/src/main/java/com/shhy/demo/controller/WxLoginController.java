@@ -165,6 +165,7 @@ public class WxLoginController {
     @RequestMapping(value = "analysis/online", method = RequestMethod.GET)
     public MapResult online(HttpSession session) {
         Integer id = (Integer) session.getAttribute("cntId");
+        System.out.println(id);
         if (null == id) {
             logger.info("nothing");
             return MapResult.fail().add("注意执行顺序");
