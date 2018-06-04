@@ -38,6 +38,9 @@ public class ManagerController {
 
     @RequestMapping(value = "adminLogin", method = RequestMethod.POST)
     public JsonResult adminLogin(@Param("username") String username, @Param("password") String password, HttpSession session) {
+        if(null == username && null == password){
+            return JsonResult.fail().add("msg", "请输入用户名密码");
+        }
         logger.info("check null" + username + password);
         if (username.equals(AdminUtil.USER_NAME) && AppMd5Util.md5Password(password).equals(AdminUtil.PASSWORD)) {
             session.setAttribute("userName", username);
