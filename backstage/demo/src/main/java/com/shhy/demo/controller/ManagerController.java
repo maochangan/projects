@@ -14,6 +14,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -47,7 +48,7 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "analysis", method = RequestMethod.GET)
-    public JsonResult analysis(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("eventId") Integer eventId, HttpSession session) {
+    public JsonResult analysis(@Param("beginTime") Timestamp beginTime, @Param("endTime") Timestamp endTime, @Param("eventId") Integer eventId, HttpSession session) {
         logger.info("事件数据查询API");
 //        if (null == session.getAttribute("userName")) {
 //            return JsonResult.fail().add("msg", "请登陆！");
@@ -62,7 +63,7 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "analysis/users", method = RequestMethod.GET)
-    public JsonResult analysisUsers(@Param("beginTime")Date beginTime, @Param("endTime")Date endTime, HttpSession session) {
+    public JsonResult analysisUsers(@Param("beginTime")Timestamp beginTime, @Param("endTime")Timestamp endTime, HttpSession session) {
         logger.info("用户数据查询API");
 //        if (null == session.getAttribute("userName")) {
 //            return JsonResult.fail().add("msg", "请登陆！");
