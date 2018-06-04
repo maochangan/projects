@@ -5,7 +5,6 @@ import com.shhy.demo.bean.GroupUser;
 import com.shhy.demo.bean.WxCnt;
 import com.shhy.demo.bean.WxUser;
 import com.shhy.demo.service.WxUserService;
-import com.shhy.demo.util.JsonResult;
 import com.shhy.demo.util.MapResult;
 import com.shhy.demo.util.WxAuthUtil;
 import org.apache.ibatis.annotations.Param;
@@ -164,18 +163,21 @@ public class WxLoginController {
     }
 
     @RequestMapping(value = "analysis/online", method = RequestMethod.GET)
-    public void online(HttpSession session) {
+    public MapResult online(HttpSession session) {
         Integer id = (Integer) session.getAttribute("cntId");
         if (null == id) {
             logger.info("nothing");
+            return MapResult.fail().add("注意执行顺序");
         }
         WxCnt wxCnt = wxUserService.getCntById(id);
         if (null == wxCnt) {
             logger.info("nothing");
+            return MapResult.fail();
         }
         wxCnt.setUseTime(wxCnt.getUseTime() + 1);
         boolean state = wxUserService.updateCnt(wxCnt);
         logger.info("is update:" + state);
+        return MapResult.success();
     }
 
 }
